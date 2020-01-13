@@ -1,0 +1,13 @@
+{
+    "server": {
+        "port": "@@PORT || 3000"
+    },
+    "database": {
+        "connection": {
+            "type": "postgres"
+        }
+    },
+    "jwt": {
+        "exp": "86400"
+    }
+}

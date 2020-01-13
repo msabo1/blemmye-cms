@@ -1,0 +1,15 @@
+{
+    "database": {
+        "connection": {
+            "host": "",
+            "port": "",
+            "user": "",
+            "password": "",
+            "database": "",
+            "synhcronize": "false"
+        }
+    },
+    "jwt": {
+        "secret": ""
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "database": {
+        "connection": {
+            "host": "localhost",
+            "port": "5432",
+            "user": "postgres",
+            "password": "",
+            "database": "blemmye-cms",
+            "synhcronize": "true"
+        }
+    },
+    "jwt": {
+        "secret": "mysecret"
+    }
+}
