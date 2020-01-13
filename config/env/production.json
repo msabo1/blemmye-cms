@@ -6,7 +6,7 @@
             "user": "",
             "password": "",
             "database": "",
-            "synhcronize": "false"
+            "synchronize": "false"
         }
     },
     "jwt": {
