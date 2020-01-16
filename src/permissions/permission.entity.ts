@@ -1,5 +1,5 @@
 import { Entity, BaseEntity, PrimaryColumn, OneToMany, Column } from "typeorm";
-import { RolePrivilege } from "./role-privilege";
+import { RolePrivilege } from "../roles/role-privilege";
 
 @Entity('permissions')
 export class Permission extends BaseEntity{
