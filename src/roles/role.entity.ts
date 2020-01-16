@@ -9,6 +9,12 @@ export class Role extends BaseEntity{
     @Column('text')
     name: string;
 
+    @Column()
+    createdAt: Date;
+
+    @Column({nullable: true})
+    updatedAt: Date;
+
     @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role)
     privileges: RolePrivilege[];
     
