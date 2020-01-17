@@ -1,8 +1,8 @@
-import { BaseEntity, Entity, PrimaryColumn, OneToMany, Column } from "typeorm";
+import { Entity, PrimaryColumn, OneToMany, Column } from "typeorm";
 import { RolePrivilege } from "../roles/role-privilege";
 
 @Entity('groups')
-export class Group extends BaseEntity{
+export class Group{
     @PrimaryColumn('text')
     name: string;
 

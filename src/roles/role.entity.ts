@@ -1,8 +1,8 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { RolePrivilege } from "./role-privilege";
 
 @Entity('roles')
-export class Role extends BaseEntity{
+export class Role{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
