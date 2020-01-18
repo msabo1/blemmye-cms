@@ -5,7 +5,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 const ormConfig: TypeOrmModuleOptions = {
   ...config.database.connection,
   entities,
-  migrations: [__dirname + './migrations/*.ts']
+  migrations: [__dirname + '/migrations/*.ts']
 };
 
 export = ormConfig;
