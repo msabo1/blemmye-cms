@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, AfterLoad } from "typeorm";
 import { RolePrivilege } from "./role-privilege";
 
 @Entity('roles')
@@ -9,13 +9,27 @@ export class Role{
     @Column('text')
     name: string;
 
-    @Column()
+    @CreateDateColumn()
     createdAt: Date;
 
-    @Column({nullable: true})
+    @UpdateDateColumn({nullable: true})
     updatedAt: Date;
 
-    @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role)
+    @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role, {eager: true, cascade: true})
     privileges: RolePrivilege[];
-    
+
+    /* 
+    This routine is necessary due to typeorm limitations. If role has no privileges typeorm loads it as privilege with permission and group set to null.
+    This routine detects such roles and sets their privileges to empty array.
+    */
+    @AfterLoad()
+    private fixNullPrivilege(): void{
+        if(!this.privileges || !this.privileges[0]){
+            return;
+        }
+        const privilege: RolePrivilege = this.privileges[0];
+        if(!privilege.permission || !privilege.group){
+            this.privileges = [];
+        }
+    }
 }
