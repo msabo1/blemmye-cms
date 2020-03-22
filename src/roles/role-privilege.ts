@@ -5,10 +5,10 @@ import { Role } from "./role.entity";
 
 @Entity('rolePrivileges')
 export class RolePrivilege{
-    @ManyToOne(type => Permission, permission => permission.rolePrivileges, {primary: true})
+    @ManyToOne(type => Permission, permission => permission.rolePrivileges, {primary: true, eager: true})
     permission: Permission;
 
-    @ManyToOne(type => Group, group => group.rolePrivileges, {primary: true})
+    @ManyToOne(type => Group, group => group.rolePrivileges, {primary: true, eager: true})
     group: Group;
 
     @ManyToOne(type => Role, role => role.privileges, {primary: true})
