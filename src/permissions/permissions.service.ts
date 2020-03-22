@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from './permission.entity';
 import { Repository } from 'typeorm';
@@ -14,6 +14,15 @@ export class PermissionsService {
         }catch(error){
             throw new InternalServerErrorException;
         }
-        
+    }
+
+    async areValid(permissions: Permission[]): Promise<boolean>{
+        const validPermissions: string[] = (await this.findAll()).map((permission: Permission): string => permission.name);;
+        for(let permission of permissions){
+            if(!validPermissions.includes(permission.name)){
+                return false;
+            }
+        }
+        return true;
     }
 }

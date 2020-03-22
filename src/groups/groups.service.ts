@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Group } from './group.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,5 +15,15 @@ export class GroupsService {
         }catch(error){
             throw new InternalServerErrorException;
         }
+    }
+
+    async areValid(groups: Group[]): Promise<boolean>{
+        const validGroups: string[] = (await this.findAll()).map((group: Group): string => group.name);
+        for(let group of groups){
+            if(!validGroups.includes(group.name)){
+                return false;
+            }
+        }
+        return true;
     }
 }
