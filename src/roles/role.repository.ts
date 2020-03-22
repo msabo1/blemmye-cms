@@ -4,6 +4,12 @@ import { QueryRoleDto } from "./dto/query-role.dto";
 
 @EntityRepository(Role)
 export class RoleRepository extends Repository<Role>{
+
+    /** 
+     * Fetches database for roles matching request query properites.
+     * Loads roles privileges.
+     * Returns fetched roles.
+    */
     async findWithQuery(queryRoleDto: QueryRoleDto): Promise<Role[]>{
         let {search, limit, offset, sortBy, order} = queryRoleDto;
         const query = this.createQueryBuilder('role')
