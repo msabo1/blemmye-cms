@@ -18,10 +18,12 @@ export class Role{
     @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role, {eager: true, cascade: true})
     privileges: RolePrivilege[];
 
-    /* 
-    This routine is necessary due to typeorm limitations. If role has no privileges typeorm loads it as privilege with permission and group set to null.
-    This routine detects such roles and sets their privileges to empty array.
-    */
+    /**
+     * This routine is necessary due to typeorm limitations. 
+     * If role has no privileges typeorm loads it as privilege with permission and group set to null. 
+     * This routine detects such roles and sets their privileges to empty array.
+     * It is executed after each role is loaded.
+     */ 
     @AfterLoad()
     private fixNullPrivilege(): void{
         if(!this.privileges || !this.privileges[0]){
