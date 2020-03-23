@@ -11,24 +11,42 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 export class RolesController {
     constructor(private readonly rolesService: RolesService){}
 
+    /**
+     * Returns all roles matching query properties.
+     * If query is empty, returns all roles.
+     * Validates query properties.
+     */
     @Get()
     async get(@Query() queryRoleDto: QueryRoleDto): Promise<Role[]>{
         return await this.rolesService.find(queryRoleDto);
     }
 
+    /** 
+     * Returns role with given id, if exists.
+     * Validates id.
+    */
     @Get(':id')
     async getById(@Param() {id}: GetRoleDto): Promise<Role>{
         return await this.rolesService.findById(id);
     }
 
+    /** 
+     * Creates new role with given properties.
+     * Validates properties.
+     * Returns created role.
+    */
     @Post()
     async create(@Body() createRoleDto: CreateRoleDto): Promise<Role>{
         return await this.rolesService.create(createRoleDto);
     }
 
+    /** 
+     * Updates role with given id with given properites.
+     * Validates id and properties.
+     * Returns updated role.
+    */
     @Patch(':id')
     async update(@Param() {id}: GetRoleDto, @Body() updateRoleDto: UpdateRoleDto): Promise<Role>{
-        console.log(updateRoleDto)
         return await this.rolesService.update(id, updateRoleDto);
     }
 }
