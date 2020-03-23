@@ -44,16 +44,17 @@ export class RolesService {
      * If such role doesn't exist, throws NotFoundException
      */
     async findById(id: string): Promise<Role>{
+        let role: Role;
         try{
-            const role: Role = await this.roleRepository.findOne(id);
-
-            if(!role){
-                throw new NotFoundException;
-            }
-            return role;
+            role = await this.roleRepository.findOne(id);
         }catch(error){
             throw new InternalServerErrorException;
         }
+
+        if(!role){
+            throw new NotFoundException;
+        }
+        return role;
     }
 
     /**
@@ -102,6 +103,19 @@ export class RolesService {
         }
         
         return role;
+    }
+
+    /**
+     * Deletes role with given id from database.
+     * Doesn't check if role exists.
+     */
+    async delete(id: string): Promise<void>{
+        try{
+            await this.roleRepository.delete(id);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+        
     }
 
     /**

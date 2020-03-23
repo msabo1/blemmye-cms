@@ -15,7 +15,7 @@ export class Role{
     @UpdateDateColumn({nullable: true})
     updatedAt: Date;
 
-    @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role, {eager: true, cascade: true})
+    @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role, {eager: true, cascade: ['insert', 'update']})
     privileges: RolePrivilege[];
 
     /**

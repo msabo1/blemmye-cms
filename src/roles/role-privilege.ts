@@ -11,6 +11,6 @@ export class RolePrivilege{
     @ManyToOne(type => Group, group => group.rolePrivileges, {primary: true, eager: true})
     group: Group;
 
-    @ManyToOne(type => Role, role => role.privileges, {primary: true})
+    @ManyToOne(type => Role, role => role.privileges, {primary: true, onDelete: 'CASCADE'})
     role: Role;
 }
