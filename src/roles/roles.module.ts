@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RolesController } from './roles.controller';
 import { RolesService } from './roles.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RolePrivilege } from './role-privilege';
+import { RolePrivilege } from './entities/role-privilege.entity';
 import { RoleRepository } from './role.repository';
 import { PermissionsModule } from '../permissions/permissions.module';
 import { GroupsModule } from '../groups/groups.module';

@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Query, UsePipes, ValidationPipe, Patch, Delete } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { Role } from './role.entity';
+import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { QueryRoleDto } from './dto/query-role.dto';
 import { GetRoleDto } from './dto/get-role.dto';

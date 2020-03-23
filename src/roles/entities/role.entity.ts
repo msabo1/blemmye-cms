@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, AfterLoad } from "typeorm";
-import { RolePrivilege } from "./role-privilege";
+import { RolePrivilege } from "./role-privilege.entity";
 
 @Entity('roles')
 export class Role{

@@ -1,7 +1,7 @@
-import { Role } from 'src/roles/role.entity';
+import { Role } from 'src/roles/entities/role.entity';
 import { Group } from 'src/groups/group.entity';
 import { Permission } from 'src/permissions/permission.entity';
-import { RolePrivilege } from 'src/roles/role-privilege';
+import { RolePrivilege } from 'src/roles/entities/role-privilege.entity';
 
 export const entities = [
     Role,

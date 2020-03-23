@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, OneToMany, Column } from "typeorm";
-import { RolePrivilege } from "../roles/role-privilege";
+import { RolePrivilege } from "../roles/entities/role-privilege.entity";
 
 @Entity('groups')
 export class Group{

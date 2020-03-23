@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import { Role } from "./role.entity";
+import { Role } from "./entities/role.entity";
 import { QueryRoleDto } from "./dto/query-role.dto";
 
 @EntityRepository(Role)

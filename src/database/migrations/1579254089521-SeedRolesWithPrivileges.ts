@@ -2,8 +2,8 @@ import {MigrationInterface, QueryRunner, getRepository, Repository} from "typeor
 import { permissionSeed } from "../seeds/permission.seed";
 import { groupSeed } from "../seeds/group.seed";
 import { roleSeed } from "../seeds/role.seed";
-import { RolePrivilege } from "src/roles/role-privilege";
-import { Role } from "src/roles/role.entity";
+import { RolePrivilege } from "src/roles/entities/role-privilege.entity";
+import { Role } from "src/roles/entities/role.entity";
 import { Group } from "src/groups/group.entity";
 import { Permission } from "src/permissions/permission.entity";
 

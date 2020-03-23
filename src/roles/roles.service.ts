@@ -1,11 +1,11 @@
 import { Injectable, InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Role } from './role.entity';
+import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { QueryRoleDto } from './dto/query-role.dto';
 import { RoleRepository } from './role.repository';
 import { UpdateRoleDto } from './dto/update-role.dto';
-import { RolePrivilege } from './role-privilege';
+import { RolePrivilege } from './entities/role-privilege.entity';
 import { Repository } from 'typeorm';
 import { GroupsService } from '../groups/groups.service';
 import { PermissionsService } from '../permissions/permissions.service';
