@@ -5,7 +5,7 @@
 **Project is in very early stage of development and currently is not usable.**
 
 ## Description
-Blemmye is headless content managment system I am developing as university project. It is actually extendable minimal core which provides only REST API endponts for core features. It is developed using NestJS framework.
+Blemmye is headless content managment system I am developing as university project. It is actually extensible minimal core which provides only REST API endponts for core features. It is developed using NestJS framework.
 
 ## Core fetures
 - User management
