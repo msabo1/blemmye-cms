@@ -8,6 +8,7 @@ import * as ormConfig from './database/typeorm.config';
 import { RolesModule } from './roles/roles.module';
 import { GroupsModule } from './groups/groups.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     RolesModule,
     GroupsModule,
     PermissionsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
