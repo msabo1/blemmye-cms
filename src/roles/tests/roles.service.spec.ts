@@ -8,10 +8,12 @@ import { RolePrivilege } from '../entities/role-privilege.entity';
 import { QueryRoleDto } from '../dto/query-role.dto';
 import { InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Role } from '../entities/role.entity';
-import { rejects } from 'assert';
+import { MockType } from '../../shared/types/mock.type';
+import { Repository } from 'typeorm';
+import { CreateRoleDto } from '../dto/create-role.dto';
+import { UpdateRoleDto } from '../dto/update-role.dto';
 
-
-const mockRoleRepository = () => ({
+const mockRoleRepository: () => MockType<RoleRepository> = () => ({
   findOne: jest.fn(),
   findWithQuery: jest.fn(),
   save: jest.fn(),
@@ -19,35 +21,46 @@ const mockRoleRepository = () => ({
   delete: jest.fn()
 });
 
-const mockRolePrivilegeRepository = () => ({
+const mockRolePrivilegeRepository: () => MockType<Repository<RolePrivilege>> = () => ({
   create: jest.fn(),
   remove: jest.fn()
 });
 
-const mockGroupsAndPermissionsService = () => ({
+const mockGroupsService: () => MockType<GroupsService> = () => ({
+  areValid: jest.fn()
+});
+
+const mockPermissionsService: () => MockType<PermissionsService> = () => ({
   areValid: jest.fn()
 });
 
 describe('RolesService', () => {
   let service: RolesService;
-  let roleRepository, privilegeRepository, permissionsService, groupsService;
+  let roleRepository: MockType<RoleRepository>;
+  let privilegeRepository: MockType<Repository<RolePrivilege>>;
+  let permissionsService: MockType<PermissionsService>;
+  let groupsService: MockType<PermissionsService>;
+
+  let role: Role;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RolesService,
         {provide: RoleRepository, useFactory: mockRoleRepository},
-        {provide: GroupsService, useFactory: mockGroupsAndPermissionsService},
-        {provide: PermissionsService, useFactory: mockGroupsAndPermissionsService},
+        {provide: GroupsService, useFactory: mockGroupsService},
+        {provide: PermissionsService, useFactory: mockPermissionsService},
         {provide: getRepositoryToken(RolePrivilege), useFactory: mockRolePrivilegeRepository}
       ],
     }).compile();
 
     service = module.get<RolesService>(RolesService);
-    roleRepository = module.get(RoleRepository);
-    privilegeRepository = module.get(getRepositoryToken(RolePrivilege));
-    permissionsService = module.get(PermissionsService);
-    groupsService = module.get(GroupsService);
+    roleRepository = module.get<RoleRepository, MockType<RoleRepository>>(RoleRepository);
+    privilegeRepository = module.get<Repository<RolePrivilege>, MockType<Repository<RolePrivilege>>>(getRepositoryToken(RolePrivilege));
+    permissionsService = module.get<PermissionsService, MockType<PermissionsService>>(PermissionsService);
+    groupsService = module.get<GroupsService, MockType<GroupsService>>(GroupsService);
+
+    role = new Role();
   });
 
   it('should be defined', () => {
@@ -58,7 +71,7 @@ describe('RolesService', () => {
     const query: QueryRoleDto = {search: 'mock search'};
 
     it('should get roles from repository and return them', async () => {
-      const roles = 'mock roles';
+      const roles:Role[] = [role]
       roleRepository.findWithQuery.mockResolvedValue(roles);
 
       expect(roleRepository.findWithQuery).not.toBeCalled();
@@ -79,7 +92,6 @@ describe('RolesService', () => {
     const id: string = 'mock id';
 
     it('should get role from repository and return it', async () => {
-      const role = 'mockRole';
       roleRepository.findOne.mockResolvedValue(role);
 
       expect(roleRepository.findOne).not.toBeCalled();
@@ -105,27 +117,16 @@ describe('RolesService', () => {
   });
 
   describe('create', () => {
-    let mockCreateRoleDto;
+    let createRoleDto: CreateRoleDto;
     beforeEach(() => {
-      mockCreateRoleDto = {
-        privileges: null,
-        name: 'mock name'
-      };
+      createRoleDto = new CreateRoleDto();
     });
     
 
     it('should validate role privileges, create role using repository, save it and return it', async () => {
-      mockCreateRoleDto.privileges = 'mock privileges';
-      const mockPrivileges = [{
-        permission: {
-          name: 'mock permission'
-        },
-        group: {
-          name: 'mock group'
-        }
-      }];
-      const role = 'mock role';
-      privilegeRepository.create.mockReturnValue(mockPrivileges);
+      createRoleDto.privileges = [];
+      const privileges: RolePrivilege[] = [new RolePrivilege()];
+      privilegeRepository.create.mockReturnValue(privileges);
       permissionsService.areValid.mockResolvedValue(true);
       groupsService.areValid.mockResolvedValue(true);
       roleRepository.create.mockReturnValue(role);
@@ -136,24 +137,17 @@ describe('RolesService', () => {
       expect(groupsService.areValid).not.toBeCalled();
       expect(roleRepository.save).not.toBeCalled();
 
-      expect(await service.create(mockCreateRoleDto)).toEqual(role);
-      expect(privilegeRepository.create).toBeCalledWith(mockCreateRoleDto.privileges);
-      expect(roleRepository.create).toBeCalledWith(mockCreateRoleDto);
+      expect(await service.create(createRoleDto)).toEqual(role);
+      expect(privilegeRepository.create).toBeCalledWith(createRoleDto.privileges);
+      expect(roleRepository.create).toBeCalledWith(createRoleDto);
       expect(roleRepository.save).toBeCalledWith(role);
       
     });
 
     it('should not validate privileges and throw BadRequestException', async () => {
-      mockCreateRoleDto.privileges = 'mock privileges';
-      const mockPrivileges = [{
-        permission: {
-          name: 'mock permission'
-        },
-        group: {
-          name: 'mock group'
-        }
-      }];
-      privilegeRepository.create.mockReturnValue(mockPrivileges);
+      createRoleDto.privileges = [];
+      const privileges: RolePrivilege[] = [new RolePrivilege()];
+      privilegeRepository.create.mockReturnValue(privileges);
       permissionsService.areValid.mockResolvedValue(false);
       groupsService.areValid.mockResolvedValue(true);
 
@@ -161,45 +155,40 @@ describe('RolesService', () => {
       expect(permissionsService.areValid).not.toBeCalled();
       expect(groupsService.areValid).not.toBeCalled();
 
-      await expect(service.create(mockCreateRoleDto)).rejects.toThrow(BadRequestException);
-      expect(privilegeRepository.create).toBeCalledWith(mockCreateRoleDto.privileges);
+      await expect(service.create(createRoleDto)).rejects.toThrow(BadRequestException);
+      expect(privilegeRepository.create).toBeCalledWith(createRoleDto.privileges);
       expect(roleRepository.create).not.toBeCalled();
       expect(roleRepository.save).not.toBeCalled();
     });
 
     it('should throw InternalServerErrorException', async () => {
-      const role = 'mock role';
       roleRepository.save.mockRejectedValue(null);
       roleRepository.create.mockReturnValue(role);
   
       expect(roleRepository.save).not.toBeCalled();
       expect(roleRepository.create).not.toBeCalled();
   
-      await expect(service.create(mockCreateRoleDto)).rejects.toThrow(InternalServerErrorException);
-      expect(roleRepository.create).toBeCalledWith(mockCreateRoleDto);
+      await expect(service.create(createRoleDto)).rejects.toThrow(InternalServerErrorException);
+      expect(roleRepository.create).toBeCalledWith(createRoleDto);
       expect(roleRepository.save).toBeCalledWith(role);
     });
   });
 
 
   describe('update', () => {
-    let mockFindById, id, role;
+    let mockFindById: jest.SpyInstance;
+    let id: string;
     beforeEach(() => {
       id = 'mock id';
-      role = new Role();
       mockFindById = jest.spyOn(service, 'findById').mockResolvedValue(role);
     });
 
     it('should update roles name and privileges using repository, save it and return it', async () => {
-      const mockUpdateDto = {
-        name: 'mock name',
-        privileges: []
-      };
+      const updateRoleDto:UpdateRoleDto = new UpdateRoleDto();
+      updateRoleDto.privileges = [];
 
-      const privilege: RolePrivilege = new RolePrivilege();
-
-      const mockPrivileges: RolePrivilege[] = [privilege];
-      privilegeRepository.create.mockReturnValue(mockPrivileges);
+      const privileges: RolePrivilege[] = [new RolePrivilege];
+      privilegeRepository.create.mockReturnValue(privileges);
       permissionsService.areValid.mockResolvedValue(true);
       groupsService.areValid.mockResolvedValue(true);
 
@@ -209,20 +198,20 @@ describe('RolesService', () => {
       expect(groupsService.areValid).not.toBeCalled();
       expect(roleRepository.save).not.toBeCalled();
 
-      role.name = mockUpdateDto.name;
-      role.privileges = mockPrivileges;
-      expect(await service.update(id, mockUpdateDto)).toEqual(role);
-      expect(privilegeRepository.create).toBeCalledWith(mockUpdateDto.privileges);
+      role.name = updateRoleDto.name;
+      role.privileges = privileges;
+      expect(await service.update(id, updateRoleDto)).toEqual(role);
+      expect(privilegeRepository.create).toBeCalledWith(updateRoleDto.privileges);
       expect(roleRepository.save).toBeCalledWith(role);
       expect(mockFindById).toBeCalledWith(id);
     });
 
     it('sholud throw InternalServerErrorException', async () => {
-      const mockUpdateDto = {};
+      const updateRoleDto:UpdateRoleDto = new UpdateRoleDto();
       roleRepository.save.mockRejectedValue(null);
 
       expect(roleRepository.save).not.toBeCalled();
-      await expect(service.update(id, mockUpdateDto)).rejects.toThrow(InternalServerErrorException);
+      await expect(service.update(id, updateRoleDto)).rejects.toThrow(InternalServerErrorException);
       expect(mockFindById).toBeCalledWith(id);
       expect(roleRepository.save).toBeCalledWith(role);
     });
@@ -230,7 +219,7 @@ describe('RolesService', () => {
 
 
   describe('delete', () => {
-    const id = 'mock id';
+    const id: string = 'mock id';
 
     it('should delete role with given id using repository', async () => {
       expect(roleRepository.delete).not.toBeCalled();
