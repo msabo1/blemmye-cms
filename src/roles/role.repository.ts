@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, Repository, SelectQueryBuilder } from "typeorm";
 import { Role } from "./entities/role.entity";
 import { QueryRoleDto } from "./dto/query-role.dto";
 
@@ -12,7 +12,7 @@ export class RoleRepository extends Repository<Role>{
     */
     async findWithQuery(queryRoleDto: QueryRoleDto): Promise<Role[]>{
         let {search, limit, offset, sortBy, order} = queryRoleDto;
-        const query = this.createQueryBuilder('role')
+        const query: SelectQueryBuilder<Role> = this.createQueryBuilder('role')
             .leftJoinAndSelect('role.privileges', 'privilege')
             .leftJoinAndSelect('privilege.permission', 'permission')
             .leftJoinAndSelect('privilege.group', 'group');
@@ -28,11 +28,11 @@ export class RoleRepository extends Repository<Role>{
             query.take(limit);
         }
         if(sortBy){
-            sortBy = 'role.' + sortBy;
+            sortBy = 'role.' + sortBy; // column name must be prefixed by 'role.'
             query.orderBy(sortBy, order)
         }
 
-        const roles = await query.getMany();
+        const roles: Role[] = await query.getMany();
 
         return roles;
     }
