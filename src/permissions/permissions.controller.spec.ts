@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PermissionsController } from './permissions.controller';
 import { PermissionsService } from './permissions.service';
-import { async } from 'rxjs/internal/scheduler/async';
-import { InternalServerErrorException, BadGatewayException } from '@nestjs/common';
+import { MockType } from '../shared/types/mock.type';
+import { Permission } from './permission.entity';
 
-const mockPermissionService = () => ({
+const mockPermissionService: () => MockType<PermissionsService> = () => ({
   findAll: jest.fn()
 });
 
 describe('Permissions Controller', () => {
   let controller: PermissionsController;
-  let permissionsService;
+  let permissionsService: MockType<PermissionsService>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,7 +21,7 @@ describe('Permissions Controller', () => {
     }).compile();
 
     controller = module.get<PermissionsController>(PermissionsController);
-    permissionsService = module.get<PermissionsService>(PermissionsService);
+    permissionsService = module.get<PermissionsService, MockType<PermissionsService>>(PermissionsService);
   });
 
   it('should be defined', () => {
@@ -29,18 +29,11 @@ describe('Permissions Controller', () => {
   });
 
   it('returns all permissions using permissionService', async () => {
-    let mockValue = "test value";
-    permissionsService.findAll.mockResolvedValue(mockValue);
+    const permissions: Permission[] = [new Permission()]
+    permissionsService.findAll.mockResolvedValue(permissions);
 
     expect(permissionsService.findAll).not.toBeCalled();
-    let result = await controller.getAll();
+    expect(await controller.getAll()).toEqual(permissions);
     expect(permissionsService.findAll).toBeCalled();
-    expect(result).toEqual(mockValue);
-  });
-
-  it('returns error object due to permissionService failure', async () => {
-    permissionsService.findAll.mockImplementation(() => {throw new InternalServerErrorException});
-
-    expect(controller.getAll()).rejects.toThrow(InternalServerErrorException);
   });
 });
