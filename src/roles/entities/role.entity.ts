@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, AfterLoad } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, AfterLoad, ManyToOne } from "typeorm";
 import { RolePrivilege } from "./role-privilege.entity";
+import { User } from "../../users/user.entity";
 
 @Entity('roles')
 export class Role{
@@ -17,6 +18,10 @@ export class Role{
 
     @OneToMany(type => RolePrivilege, rolePrivilege => rolePrivilege.role, {eager: true, cascade: ['insert', 'update']})
     privileges: RolePrivilege[];
+
+    @OneToMany(type => User, user => user.role)
+    users: User[];
+
 
     /**
      * This routine is necessary due to typeorm limitations. 
