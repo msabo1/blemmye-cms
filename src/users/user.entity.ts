@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
+import { UserStatus } from "./user-status.enum";
 
 @Entity('users')
 export class User{
@@ -11,6 +12,9 @@ export class User{
 
     @Column()
     password: string;
+
+    @Column()
+    status: UserStatus;
 
     @ManyToOne(type => Role, role => role.users)
     role: Role;
