@@ -35,7 +35,7 @@
     "typeorm": "^0.2.22"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.0.2",
+    "@nestjs/cli": "^7.1.2",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^6.7.1",
     "@types/express": "^4.17.1",
@@ -43,6 +43,7 @@
     "@types/node": "^12.7.5",
     "@types/supertest": "^2.0.8",
     "jest": "^25.1.0",
+    "minimist": ">=1.2.2",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
@@ -50,8 +51,7 @@
     "ts-node": "^8.4.1",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.3",
-    "minimist": ">=1.2.2"
+    "typescript": "^3.6.3"
   },
   "jest": {
     "moduleFileExtensions": [
