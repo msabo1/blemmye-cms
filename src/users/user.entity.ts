@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
 import { UserStatus } from "./user-status.enum";
 
@@ -16,9 +16,17 @@ export class User{
     @Column()
     status: UserStatus;
 
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn({nullable: true})
+    updatedAt: Date;
+
     @ManyToOne(type => Role, role => role.users)
     role: Role;
 
     @RelationId((user: User) => user.role)
     roleId: string;
+
+
 }
