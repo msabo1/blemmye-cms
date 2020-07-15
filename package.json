@@ -29,6 +29,7 @@
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
+    "nestjsx-automapper": "^3.0.17",
     "node-config-ts": "^3.0.4",
     "pg": "^8.3.0",
     "reflect-metadata": "^0.1.13",
