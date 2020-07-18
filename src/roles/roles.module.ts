@@ -15,9 +15,9 @@ RolePrivilegeProfile
 @Module({
   imports: [
     TypeOrmModule.forFeature([RoleRepository, RolePrivilege]),
-    PermissionsModule,
-    GroupsModule,
-    PreferencesModule
+    forwardRef(() => PermissionsModule),
+    forwardRef(() => GroupsModule),
+    PreferencesModule,
   ],
   controllers: [RolesController],
   providers: [RolesService],

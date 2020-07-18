@@ -27,6 +27,7 @@ export class RolesController {
      * Returns role with given id, if exists.
      * Validates id.
     */
+    @PrivilegeAuth('read', 'roles')
     @Get(':id')
     async getById(@Param() {id}: GetRoleDto): Promise<Role>{
         return await this.rolesService.findById(id);
@@ -37,6 +38,7 @@ export class RolesController {
      * Validates properties.
      * Returns created role.
     */
+    @PrivilegeAuth('create', 'roles')
     @Post()
     async create(@Body() createRoleDto: CreateRoleDto): Promise<Role>{
         return await this.rolesService.create(createRoleDto);
@@ -47,6 +49,7 @@ export class RolesController {
      * Validates id and properties.
      * Returns updated role.
     */
+    @PrivilegeAuth('update', 'roles')
     @Patch(':id')
     async update(@Param() {id}: GetRoleDto, @Body() updateRoleDto: UpdateRoleDto): Promise<Role>{
         return await this.rolesService.update(id, updateRoleDto);
@@ -55,6 +58,7 @@ export class RolesController {
     /** 
      * Deletes role with given id.
     */
+    @PrivilegeAuth('delete', 'roles')
     @Delete(':id')
     async delete(@Param() {id}: GetRoleDto): Promise<void>{
         await this.rolesService.delete(id);
