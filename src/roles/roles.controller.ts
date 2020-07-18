@@ -1,10 +1,11 @@
-import { Controller, Get, Param, Post, Body, Query, UsePipes, ValidationPipe, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, UsePipes, ValidationPipe, Patch, Delete, UseGuards } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { QueryRoleDto } from './dto/query-role.dto';
 import { GetRoleDto } from './dto/get-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
 
 @Controller('roles')
 @UsePipes(new ValidationPipe({transform: true}))
@@ -16,6 +17,7 @@ export class RolesController {
      * If query is empty, returns all roles.
      * Validates query properties.
      */
+    @PrivilegeAuth('read', 'roles')
     @Get()
     async get(@Query() queryRoleDto: QueryRoleDto): Promise<Role[]>{
         return await this.rolesService.find(queryRoleDto);

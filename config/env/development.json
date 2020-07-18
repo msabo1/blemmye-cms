@@ -11,6 +11,7 @@
         }
     },
     "jwt": {
-        "secret": "mysecret"
+        "secret": "mysecret",
+        "expiresIn": "1d"
     }
 }

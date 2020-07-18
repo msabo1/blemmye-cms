@@ -7,6 +7,7 @@ import { Preferences } from './preferences.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Preferences])],
   controllers: [PreferencesController],
-  providers: [PreferencesService]
+  providers: [PreferencesService],
+  exports: [PreferencesService]
 })
 export class PreferencesModule {}

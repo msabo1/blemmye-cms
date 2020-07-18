@@ -39,4 +39,13 @@ export class Role{
             this.privileges = [];
         }
     }
+
+    hasPrivilege(privilege: RolePrivilege): boolean{
+        for(const p of this.privileges){
+            if(p.group.name == privilege.group.name && p.permission.name == privilege.permission.name){
+                return true;
+            }
+        }
+        return false;
+    }
 }

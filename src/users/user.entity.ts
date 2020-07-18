@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, RelationId, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Unique, JoinColumn } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
 import { UserStatus } from "./user-status.enum";
 
 @Entity('users')
+@Unique(['username'])
 export class User{
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -22,10 +23,11 @@ export class User{
     @UpdateDateColumn({nullable: true})
     updatedAt: Date;
 
-    @ManyToOne(type => Role, role => role.users)
+    @ManyToOne(type => Role, role => role.users, {nullable: false})
+    @JoinColumn({name: 'roleId'})
     role: Role;
 
-    @RelationId((user: User) => user.role)
+    @Column()
     roleId: string;
 
 
