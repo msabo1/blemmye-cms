@@ -1,4 +1,5 @@
 import { UserStatus } from "../user-status.enum";
+import { Role } from "../../roles/entities/role.entity";
 export class UserVM{
     id: string;
     username: string;
@@ -6,4 +7,5 @@ export class UserVM{
     createdAt: Date;
     updatedAt: Date;
     roleId: string;
+    role?: Role;
 }

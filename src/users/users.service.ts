@@ -8,14 +8,28 @@ import {JwtService} from '@nestjs/jwt'
 import { Token } from './models/token.model';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { UserStatus } from './user-status.enum';
+import { QueryUserDto } from './dto/query-user.dto';
+import { FindOneOptions } from 'typeorm';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { GetUserDto } from './dto/get-user.dto';
 
 @Injectable()
 export class UsersService {
+
+    private hashRounds: number = 10;
 
     constructor(
         private readonly userRepository: UserRepository,
         private readonly jwtService: JwtService
         ){}
+
+    async find(queryUserDto: QueryUserDto): Promise<User[]>{
+        try{
+            return await this.userRepository.findWithQuery(queryUserDto);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+    }
 
     async findByUsername(username: string): Promise<User>{
         let user: User;
@@ -32,11 +46,18 @@ export class UsersService {
         return user;
     }
 
-    async findById(id: string): Promise<User>{
+    async findById(id: string, getUserDto?: GetUserDto): Promise<User>{
         let user: User;
         try{
-            user = await this.userRepository.findOne({id});
+            const options: FindOneOptions = {};
+            if(getUserDto){
+                if(getUserDto.cascade){
+                    options.relations = ['role'];
+                }
+            }
+            user = await this.userRepository.findOne({id}, options);
         }catch(error){
+            console.log(error)
             throw new InternalServerErrorException;
         }
 
@@ -53,7 +74,7 @@ export class UsersService {
      * Returns user with generated id and timestamps.
      */
     async create(createUserDto: CreateUserDto): Promise<User>{
-        createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+        createUserDto.password = await bcrypt.hash(createUserDto.password, this.hashRounds);
         if(!createUserDto.status){
             createUserDto.status = UserStatus.active;
         }
@@ -61,8 +82,7 @@ export class UsersService {
         const user: User = this.userRepository.create(createUserDto);
         try{
             await this.userRepository.save(user);
-        }
-        catch(error){   
+        }catch(error){   
             if(error.code === '23505'){
                 throw new ConflictException('User with that username already exists.'); 
             }
@@ -100,5 +120,32 @@ export class UsersService {
         const user: User = await this.create(createUserDto);
         const token: Token = {token: await this.jwtService.signAsync({userId: user.id})};
         return token;
+    }
+
+    async update(id: string, updateUserDto: UpdateUserDto): Promise<User>{
+        let user: User = await this.findById(id);
+        if(updateUserDto.password){
+            updateUserDto.password = await bcrypt.hash(updateUserDto.password, this.hashRounds);
+        }
+        user = this.userRepository.create({...user, ...updateUserDto});
+
+        try{
+            await this.userRepository.save(user);
+        }catch(error){   
+            if(error.code === '23505'){
+                throw new ConflictException('User with that username already exists.'); 
+            }
+            throw new InternalServerErrorException;
+        }
+
+        return user;
+    }
+
+    async delete(id: string): Promise<void>{
+        try{
+            this.userRepository.delete(id);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
     }
 }

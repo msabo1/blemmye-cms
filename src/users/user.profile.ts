@@ -13,6 +13,7 @@ export class UserProfile extends ProfileBase{
             .forMember((dest: UserVM) => dest.createdAt, mapFrom((src: User) => src.createdAt))
             .forMember((dest: UserVM) => dest.updatedAt, mapFrom((src: User) => src.updatedAt))
             .forMember((dest: UserVM) => dest.roleId, mapFrom((src: User) => src.roleId))
+            .forMember((dest: UserVM) => dest.role, mapFrom((src: User) => src.role))
             .reverseMap();
     }
 }
