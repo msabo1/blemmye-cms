@@ -3,7 +3,7 @@ import { RolesService } from './roles.service';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { QueryRoleDto } from './dto/query-role.dto';
-import { GetRoleDto } from './dto/get-role.dto';
+import { Id } from '../shared/models/id.model';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
 
@@ -29,7 +29,7 @@ export class RolesController {
     */
     @PrivilegeAuth('read', 'roles')
     @Get(':id')
-    async getById(@Param() {id}: GetRoleDto): Promise<Role>{
+    async getById(@Param() {id}: Id): Promise<Role>{
         return await this.rolesService.findById(id);
     }
 
@@ -51,7 +51,7 @@ export class RolesController {
     */
     @PrivilegeAuth('update', 'roles')
     @Patch(':id')
-    async update(@Param() {id}: GetRoleDto, @Body() updateRoleDto: UpdateRoleDto): Promise<Role>{
+    async update(@Param() {id}: Id, @Body() updateRoleDto: UpdateRoleDto): Promise<Role>{
         return await this.rolesService.update(id, updateRoleDto);
     }
 
@@ -60,7 +60,7 @@ export class RolesController {
     */
     @PrivilegeAuth('delete', 'roles')
     @Delete(':id')
-    async delete(@Param() {id}: GetRoleDto): Promise<void>{
+    async delete(@Param() {id}: Id): Promise<void>{
         await this.rolesService.delete(id);
     }
 }

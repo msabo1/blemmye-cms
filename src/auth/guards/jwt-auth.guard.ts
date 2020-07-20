@@ -4,6 +4,7 @@ import { UnauthorizedException } from '@nestjs/common';
 export class JwtAuthGuard extends AuthGuard('jwt'){
     handleRequest(err, user, info){
         if(err){
+            console.log(err)
             throw new UnauthorizedException;
         }
         if(!user){
