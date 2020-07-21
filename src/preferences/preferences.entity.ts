@@ -1,4 +1,4 @@
-import { Entity, OneToOne, RelationId, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { Entity, OneToOne, RelationId, PrimaryGeneratedColumn, JoinColumn, Column } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
 
 @Entity()
@@ -8,16 +8,16 @@ export class Preferences{
     id: string;
     
     @OneToOne(type => Role)
-    @JoinColumn()
+    @JoinColumn({name: 'defaultRoleId'})
     defaultRole: Role;
 
-    @RelationId((preferences: Preferences) => preferences.defaultRole)
+    @Column()
     defaultRoleId: string;
-
-    @JoinColumn()
+    
     @OneToOne(type => Role)
+    @JoinColumn({name: 'visitorRoleId'})
     visitorRole: Role;
 
-    @RelationId((preferences: Preferences) => preferences.visitorRole)
+    @Column()
     visitorRoleId: string;
 }
