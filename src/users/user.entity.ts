@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Unique, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, Unique, JoinColumn, OneToMany } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
 import { UserStatus } from "./user-status.enum";
+import { Post } from "../blog/posts/entities/post.entity";
 
 @Entity('users')
 @Unique(['username'])
@@ -30,5 +31,7 @@ export class User{
     @Column()
     roleId: string;
 
+    @OneToMany(type => Post, post => post.author)
+    posts: Post[];
 
 }

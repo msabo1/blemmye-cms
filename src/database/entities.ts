@@ -4,6 +4,8 @@ import { Permission } from 'src/permissions/permission.entity';
 import { RolePrivilege } from 'src/roles/entities/role-privilege.entity';
 import { User } from '../users/user.entity';
 import { Preferences } from '../preferences/preferences.entity';
+import { Post } from '../blog/posts/entities/post.entity';
+import { Tag } from '../blog/posts/entities/tag.entity';
 
 export const entities = [
     Role,
@@ -11,5 +13,7 @@ export const entities = [
     Permission,
     RolePrivilege,
     User,
-    Preferences
+    Preferences,
+    Post,
+    Tag
 ];

@@ -12,6 +12,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { UsersModule } from './users/users.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { AuthModule } from './auth/auth.module';
+import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     PreferencesModule,
     AuthModule,
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
