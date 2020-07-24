@@ -1,5 +1,4 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from './entities/post.entity';
 import { PostRepository } from './post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -7,20 +6,38 @@ import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron'
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostStatus } from './post-status.enum';
+import { QueryPostsDto } from './dto/query-posts.dto';
+import { GetPostDto } from './dto/get-post.dto';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class PostsService {
     constructor(
-        @InjectRepository(Post) private readonly postRepository: PostRepository,
+        private readonly postRepository: PostRepository,
         private readonly schedulerRegistry: SchedulerRegistry
         ){}
 
-    async find(){}
-
-    async findById(id: string): Promise<Post>{
-        let post: Post;
+    async find(queryPostsDto: QueryPostsDto): Promise<Post[]>{
         try{
-            post = await this.postRepository.findOne(id);
+            return await this.postRepository.findWithQuery(queryPostsDto);
+        }catch(error){
+            console.log(error);
+            throw new InternalServerErrorException();
+        }
+    }
+
+    async findById(id: string, getPostDto?: GetPostDto): Promise<Post>{
+        let post: Post;
+
+        const options: FindOneOptions = {relations: ['tags']};
+        if(getPostDto.cascade || getPostDto.loadAuthor){
+            options.relations.push('author');
+        }
+        if(getPostDto.cascade){
+            options.relations.push('author.role');
+        }
+        try{
+            post = await this.postRepository.findOne(id, options);
         }catch(error){
             throw new InternalServerErrorException();
         }
@@ -62,12 +79,20 @@ export class PostsService {
         return post;
     }
 
+    async delete(id: string){
+        try{
+            this.postRepository.delete(id);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+    }
+
     private async schedulePublish(post: Post): Promise<void>{
         const updatePostDto: UpdatePostDto = {status: PostStatus.published};
 
         if(Date.now() >= post.publishOn.getTime()){
             await this.update(post.id, updatePostDto);
-
+            return;
         }
         const job: CronJob = new CronJob(post.publishOn, async () => await this.update(post.id, updatePostDto));
         this.schedulerRegistry.addCronJob(`${Date.now()}`, job);
