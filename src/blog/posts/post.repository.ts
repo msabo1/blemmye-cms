@@ -20,8 +20,12 @@ export class PostRepository extends Repository<Post>{
                 .leftJoinAndSelect('privilege.group', 'group');
         }
         if(search){
+            
             search = search.toLowerCase();
-            query.where('LOWER(post.title) LIKE :search OR LOWER(post.content) LIKE :search OR LOWER(post.image_path) LIKE :search OR LOWER(tag.name) LIKE :search', {search: `%${search}%`});
+
+            const subQuery: SelectQueryBuilder<Post> = query.subQuery().select(['post.id']).from(Post, 'post').leftJoin('post.tags', 'tag').where('LOWER(tag.name) LIKE :search', {search: `%${search}%`});
+
+            query.where('LOWER(post.title) LIKE :search OR LOWER(post.content) LIKE :search OR LOWER(post.image_path) LIKE :search OR post.id IN' + subQuery.getQuery(), {search: `%${search}%`});
             if(loadAuthor){
                 query.orWhere('LOWER(author.username) LIKE :search', {search: `%${search}%`});
             }
@@ -39,7 +43,8 @@ export class PostRepository extends Repository<Post>{
             query.andWhere('post.authorId = :authorId', {authorId});
         }
         if(tag){
-            query.andWhere('tag.name = :tag', {tag});
+            const subQuery: SelectQueryBuilder<Post> = query.subQuery().select(['post.id']).from(Post, 'post').leftJoin('post.tags', 'tag').where('tag.name = :tag', {tag});
+            query.andWhere('post.id IN' + subQuery.getQuery());
         }
         if(offset){
             query.skip(offset);
