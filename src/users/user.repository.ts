@@ -20,8 +20,8 @@ export class UserRepository extends Repository<User>{
         if(search){
             search = search.toLowerCase();
             query.where('LOWER(user.username) LIKE :search OR LOWER(user.status) LIKE :search', {search: `%${search}%`});
-            if(cascade){
-                query.orWhere('LOWER(role.name) LIKE :search', {search: `%${search}%`})
+            if(cascade || sortBy == 'role'){
+                query.orWhere('LOWER(role.name) LIKE :search', {search: `%${search}%`});
             }
         }
         if(status){
