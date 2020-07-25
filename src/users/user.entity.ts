@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, Up
 import { Role } from "../roles/entities/role.entity";
 import { UserStatus } from "./user-status.enum";
 import { Post } from "../blog/posts/entities/post.entity";
+import { Comment } from "../blog/comments/comment.entity";
 
 @Entity('users')
 @Unique(['username'])
@@ -33,5 +34,8 @@ export class User{
 
     @OneToMany(type => Post, post => post.author)
     posts: Post[];
+
+    @OneToMany(type => Comment, comment => comment.author)
+    comments: Comment[]
 
 }

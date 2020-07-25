@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { User } from "../../../users/user.entity";
 import { PostStatus } from "../post-status.enum";
 import { Tag } from "./tag.entity";
 import { Category } from "../../categories/category.entity";
+import { Comment } from "../../comments/comment.entity";
 
 @Entity('posts')
 export class Post{
@@ -44,5 +45,8 @@ export class Post{
     @ManyToMany(type => Category, category => category.posts)
     @JoinTable()
     categories: Category[];
+
+    @OneToMany(type => Comment, comment => comment.post)
+    comments: Comment[];
 
 }
