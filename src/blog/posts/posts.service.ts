@@ -28,7 +28,7 @@ export class PostsService {
     async findById(id: string, getPostDto?: GetPostDto): Promise<Post>{
         let post: Post;
 
-        const options: FindOneOptions = {relations: ['tags']};
+        const options: FindOneOptions = {relations: ['tags', 'categories']};
         if(getPostDto.cascade || getPostDto.loadAuthor){
             options.relations.push('author');
         }
