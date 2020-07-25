@@ -18,6 +18,7 @@ export class PostProfile extends ProfileBase{
             .forMember((dest: PostVM) => dest.publishOn, mapFrom((src: Post) => src.publishOn))
             .forMember((dest: PostVM) => dest.authorId, mapFrom((src: Post) => src.authorId))
             .forMember((dest: PostVM) => dest.tags, mapFrom((src: Post) => src.tags))
+            .forMember((dest: PostVM) => dest.categories, mapFrom((src: Post) => src.categories))
             .forMember((dest: PostVM) => dest.author, mapWith(UserVM, (src: Post) => src.author))
             .reverseMap();
     }

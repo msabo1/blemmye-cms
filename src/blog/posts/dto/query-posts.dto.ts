@@ -29,6 +29,11 @@ export class QueryPostsDto extends QueryDto{
 
     @IsOptional()
     @IsNotEmpty()
+    @IsUUID()
+    categoryId?: string;
+
+    @IsOptional()
+    @IsNotEmpty()
     @IsBoolean()
     @Transform(loadAuthor => loadAuthor == 'true')
     loadAuthor?: boolean;

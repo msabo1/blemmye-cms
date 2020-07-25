@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { User } from "../../../users/user.entity";
 import { PostStatus } from "../post-status.enum";
 import { Tag } from "./tag.entity";
+import { Category } from "../../categories/category.entity";
 
 @Entity('posts')
 export class Post{
@@ -39,5 +40,9 @@ export class Post{
 
     @Column({nullable: true})
     authorId?: string;
+
+    @ManyToMany(type => Category, category => category.posts)
+    @JoinTable()
+    categories: Category[];
 
 }

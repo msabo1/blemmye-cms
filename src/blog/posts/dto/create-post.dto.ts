@@ -2,6 +2,7 @@ import { PostStatus } from "../post-status.enum";
 import { IsDefined, IsNotEmpty, IsString, IsOptional, IsIn, IsDate, IsArray } from "class-validator";
 import { Tag } from "../entities/tag.entity";
 import { Type } from "class-transformer";
+import { Category } from "../../categories/category.entity";
 
 export class CreatePostDto{
     @IsDefined()
@@ -33,6 +34,10 @@ export class CreatePostDto{
     @IsOptional()
     @IsArray()
     tags?: Tag[];
+
+    @IsOptional()
+    @IsArray()
+    categories?: Category[];
 
     authorId: string;
 }

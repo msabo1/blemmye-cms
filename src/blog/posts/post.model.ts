@@ -1,6 +1,7 @@
 import { PostStatus } from "./post-status.enum";
 import { Tag } from "./entities/tag.entity";
 import { UserVM } from "../../users/models/user.model";
+import { Category } from "../categories/category.entity";
 
 export class PostVM{
     id: string;
@@ -20,6 +21,8 @@ export class PostVM{
     updatedAt: Date;
 
     tags: Tag[];
+    
+    categories: Category[]
 
     author?: UserVM;
 

@@ -6,6 +6,7 @@ import { User } from '../users/user.entity';
 import { Preferences } from '../preferences/preferences.entity';
 import { Post } from '../blog/posts/entities/post.entity';
 import { Tag } from '../blog/posts/entities/tag.entity';
+import { Category } from '../blog/categories/category.entity';
 
 export const entities = [
     Role,
@@ -15,5 +16,6 @@ export const entities = [
     User,
     Preferences,
     Post,
-    Tag
+    Tag,
+    Category
 ];

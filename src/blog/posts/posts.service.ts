@@ -21,7 +21,6 @@ export class PostsService {
         try{
             return await this.postRepository.findWithQuery(queryPostsDto);
         }catch(error){
-            console.log(error);
             throw new InternalServerErrorException();
         }
     }
