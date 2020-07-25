@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, ManyToMany, JoinColumn } from "typeorm";
 import { Post } from "../posts/entities/post.entity";
 
 @Entity('categories')
@@ -15,8 +15,12 @@ export class Category{
     @UpdateDateColumn({nullable: true})
     updatedAt: Date;
 
-    @ManyToOne(type => Category, category => category.children)
+    @ManyToOne(type => Category, category => category.children, {nullable: true, onDelete:'SET NULL'})
+    @JoinColumn({name: 'parentId'})
     parent: Category;
+
+    @Column({nullable: true})
+    parentId: string;
 
     @OneToMany(type => Category, category => category.parent)
     children: Category[]
