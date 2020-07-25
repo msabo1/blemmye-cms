@@ -57,7 +57,6 @@ export class UsersService {
             }
             user = await this.userRepository.findOne({id}, options);
         }catch(error){
-            console.log(error)
             throw new InternalServerErrorException;
         }
 
