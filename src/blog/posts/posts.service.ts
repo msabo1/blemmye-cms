@@ -29,12 +29,15 @@ export class PostsService {
         let post: Post;
 
         const options: FindOneOptions = {relations: ['tags', 'categories']};
-        if(getPostDto.cascade || getPostDto.loadAuthor){
-            options.relations.push('author');
+        if(getPostDto){
+            if(getPostDto.cascade || getPostDto.loadAuthor){
+                options.relations.push('author');
+            }
+            if(getPostDto.cascade){
+                options.relations.push('author.role');
+            }
         }
-        if(getPostDto.cascade){
-            options.relations.push('author.role');
-        }
+        
         try{
             post = await this.postRepository.findOne(id, options);
         }catch(error){
