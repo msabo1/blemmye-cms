@@ -3,7 +3,7 @@ import { PostsService } from './posts.service';
 import { Post as  PostEntity} from './entities/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PrivilegeAuth } from '../../auth/decorators/privilege-auth.decorator';
-import { AttachAuthorInterceptor } from './attach-author.interceptor';
+import { AttachAuthorInterceptor } from '../../shared/interceptors/attach-author.interceptor';
 import { Id } from '../../shared/models/id.model';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { QueryPostsDto } from './dto/query-posts.dto';
