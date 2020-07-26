@@ -2,10 +2,10 @@ import {MigrationInterface, QueryRunner, getRepository, Repository} from "typeor
 import { permissionSeed } from "../seeds/permission.seed";
 import { groupSeed } from "../seeds/group.seed";
 import { roleSeed } from "../seeds/role.seed";
-import { RolePrivilege } from "src/roles/entities/role-privilege.entity";
-import { Role } from "src/roles/entities/role.entity";
-import { Group } from "src/groups/group.entity";
-import { Permission } from "src/permissions/permission.entity";
+import { Permission } from "../../permissions/permission.entity";
+import { Group } from "../../groups/group.entity";
+import { Role } from "../../roles/entities/role.entity";
+import { RolePrivilege } from "../../roles/entities/role-privilege.entity";
 
 export class SeedRolesWithPrivileges1579254089521 implements MigrationInterface {
 
