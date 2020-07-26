@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { PreferencesModule } from './preferences/preferences.module';
 import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
+import { PagesModule } from './pages/pages.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { BlogModule } from './blog/blog.module';
     PreferencesModule,
     AuthModule,
     BlogModule,
+    PagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
