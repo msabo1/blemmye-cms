@@ -54,4 +54,16 @@ export class PagesService {
 
         return page;
     }
+
+    async update(id: string, updatePageDto: UpdatePageDto): Promise<Page>{
+        let page: Page = await this.findById(id);
+        page =  this.pageRepository.create({...page, ...updatePageDto});
+        
+        try{
+            await this.pageRepository.save(page);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+        return page;
+    }
 }
