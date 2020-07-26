@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PermissionsController } from './permissions.controller';
-import { PermissionsService } from './permissions.service';
-import { MockType } from '../shared/types/mock.type';
-import { Permission } from './permission.entity';
+import { PermissionsController } from '../permissions.controller';
+import { PermissionsService } from '../permissions.service';
+import { MockType } from '../../shared/types/mock.type';
+import { Permission } from '../permission.entity';
 
 const mockPermissionService: () => MockType<PermissionsService> = () => ({
   findAll: jest.fn()

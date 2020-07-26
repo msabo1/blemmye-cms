@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GroupsController } from './groups.controller';
-import { GroupsService } from './groups.service';
-import { MockType } from '../shared/types/mock.type';
-import { Group } from './group.entity';
+import { GroupsController } from '../groups.controller';
+import { GroupsService } from '../groups.service';
+import { MockType } from '../../shared/types/mock.type';
+import { Group } from '../group.entity';
 
 const mockGroupService: () => MockType<GroupsService> = () => ({
   findAll: jest.fn()

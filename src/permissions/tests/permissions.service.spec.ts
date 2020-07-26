@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PermissionsService } from './permissions.service';
-import { Permission } from './permission.entity';
+import { PermissionsService } from '../permissions.service';
+import { Permission } from '../permission.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
-import { MockType } from '../shared/types/mock.type';
+import { MockType } from '../../shared/types/mock.type';
 import { Repository } from 'typeorm';
 
 const mockPermissionRepository: () => MockType<Repository<Permission>> = () => ({

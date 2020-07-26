@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GroupsService } from './groups.service';
-import { Group } from './group.entity';
+import { GroupsService } from '.././groups.service';
+import { Group } from '.././group.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
-import { MockType } from '../shared/types/mock.type';
+import { MockType } from '../../shared/types/mock.type';
 import { Repository } from 'typeorm';
 
 const mockGroupRepository: () => MockType<Repository<Group>> = () => ({
