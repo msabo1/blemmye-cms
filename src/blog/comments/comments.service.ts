@@ -69,4 +69,12 @@ export class CommentsService {
 
         return comment;
     }
+
+    async delete(id: string){
+        try{
+            await this.commentRepository.delete(id);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+    }
 }

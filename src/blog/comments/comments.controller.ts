@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param, Patch } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param, Patch, Delete } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { PrivilegeAuth } from '../../auth/decorators/privilege-auth.decorator';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -46,5 +46,11 @@ export class CommentsController {
     async update(@Param() {id}: Id, @Body() updateCommentDto: UpdateCommentDto): Promise<CommentVM>{
         const comment: Comment = await this.commentsService.update(id, updateCommentDto);
         return await this.mapper.mapAsync(comment, CommentVM);
+    }
+
+    @PrivilegeAuth('delete', 'comments')
+    @Delete(':id')
+    async delete(@Param() {id}: Id){
+        await this.commentsService.delete(id);
     }
 }
