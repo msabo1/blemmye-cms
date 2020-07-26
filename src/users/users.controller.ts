@@ -13,7 +13,7 @@ import { Id } from '../shared/models/id.model';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
-@UsePipes(new ValidationPipe({transform: true}))
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class UsersController {
     constructor(
         private readonly usersServive: UsersService,

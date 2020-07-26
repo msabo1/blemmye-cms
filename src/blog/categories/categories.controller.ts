@@ -9,7 +9,7 @@ import { GetCategoryDto } from './dto/get-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
-@UsePipes(new ValidationPipe({transform: true}))
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService){}
 

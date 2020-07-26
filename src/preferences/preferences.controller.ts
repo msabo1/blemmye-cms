@@ -1,10 +1,11 @@
-import { Controller, Get, Patch, Body } from '@nestjs/common';
+import { Controller, Get, Patch, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PreferencesService } from './preferences.service';
 import { Preferences } from './preferences.entity';
 import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
 import { UpdatePreferencesDto } from './dto/update-preferences.dto';
 
 @Controller('preferences')
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class PreferencesController {
     constructor(private readonly preferencesService: PreferencesService){}
 

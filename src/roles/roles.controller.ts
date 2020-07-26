@@ -8,7 +8,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
 
 @Controller('roles')
-@UsePipes(new ValidationPipe({transform: true}))
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class RolesController {
     constructor(private readonly rolesService: RolesService){}
 

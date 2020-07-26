@@ -12,7 +12,7 @@ import { InjectMapper, AutoMapper } from 'nestjsx-automapper';
 import { PostVM } from './post.model';
 
 @Controller('posts')
-@UsePipes(new ValidationPipe({transform: true}))
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class PostsController {
     constructor(
         private readonly postsService: PostsService,

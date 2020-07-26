@@ -1,5 +1,5 @@
 import { PostStatus } from "../post-status.enum";
-import { IsDefined, IsNotEmpty, IsString, IsOptional, IsIn, IsDate, IsArray } from "class-validator";
+import { IsDefined, IsNotEmpty, IsString, IsOptional, IsIn, IsDate, IsArray, Allow } from "class-validator";
 import { Tag } from "../entities/tag.entity";
 import { Type } from "class-transformer";
 import { Category } from "../../categories/category.entity";
@@ -39,5 +39,6 @@ export class CreatePostDto{
     @IsArray()
     categories?: Category[];
 
+    @Allow()
     authorId: string;
 }

@@ -12,7 +12,7 @@ import { GetCommentDto } from './dto/get-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
-@UsePipes(new ValidationPipe({transform: true}))
+@UsePipes(new ValidationPipe({transform: true, whitelist: true, forbidNonWhitelisted: true}))
 export class CommentsController {
     constructor(
         private readonly commentsService: CommentsService,
