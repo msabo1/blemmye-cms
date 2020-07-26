@@ -12,6 +12,11 @@ export class CreatePostDto{
 
     @IsDefined()
     @IsNotEmpty()
+    @IsIn(Object.values(PostStatus))
+    status: PostStatus;
+
+    @IsDefined()
+    @IsNotEmpty()
     @IsString()
     content: string;
 
@@ -19,11 +24,6 @@ export class CreatePostDto{
     @IsNotEmpty()
     @IsString()
     image_path?: string;
-
-    @IsOptional()
-    @IsNotEmpty()
-    @IsIn(Object.values(PostStatus))
-    status?: PostStatus;
 
     @IsOptional()
     @IsNotEmpty()
