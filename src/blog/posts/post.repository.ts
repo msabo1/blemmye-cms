@@ -71,7 +71,11 @@ export class PostRepository extends Repository<Post>{
             query.take(limit);
         }
         if(sortBy){
-            sortBy = 'post.' + sortBy; // column name must be prefixed by 'post.'
+            if(sortBy == 'author'){
+                sortBy = 'author.username';
+            }else{
+                sortBy = 'post.' + sortBy;  // column name must be prefixed by 'post.'
+            }
             query.orderBy(sortBy, order);
         }
 

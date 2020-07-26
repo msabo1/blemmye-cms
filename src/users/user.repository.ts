@@ -37,7 +37,11 @@ export class UserRepository extends Repository<User>{
             query.take(limit);
         }
         if(sortBy){
-            sortBy = 'user.' + sortBy; // column name must be prefixed by 'user.'
+            if(sortBy == 'role'){
+                sortBy = 'role.name';
+            }else{
+                sortBy = 'user.' + sortBy; // column name must be prefixed by 'user.'
+            }
             query.orderBy(sortBy, order)
         }
 
