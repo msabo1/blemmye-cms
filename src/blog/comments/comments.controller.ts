@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param, Patch } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { PrivilegeAuth } from '../../auth/decorators/privilege-auth.decorator';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -9,6 +9,7 @@ import { AutoMapper, InjectMapper } from 'nestjsx-automapper';
 import { QueryCommentsDto } from './dto/query-comments.dto';
 import { Id } from '../../shared/models/id.model';
 import { GetCommentDto } from './dto/get-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
 @UsePipes(new ValidationPipe({transform: true}))
@@ -37,6 +38,13 @@ export class CommentsController {
     @Post()
     async create(@Body() createCommentDto: CreateCommentDto): Promise<CommentVM>{
         const comment: Comment = await this.commentsService.create(createCommentDto);
+        return await this.mapper.mapAsync(comment, CommentVM);
+    }
+
+    @PrivilegeAuth('update', 'comments')
+    @Patch(':id')
+    async update(@Param() {id}: Id, @Body() updateCommentDto: UpdateCommentDto): Promise<CommentVM>{
+        const comment: Comment = await this.commentsService.update(id, updateCommentDto);
         return await this.mapper.mapAsync(comment, CommentVM);
     }
 }

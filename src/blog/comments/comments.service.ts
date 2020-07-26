@@ -5,6 +5,7 @@ import { Comment } from './comment.entity';
 import { QueryCommentsDto } from './dto/query-comments.dto';
 import { GetCommentDto } from './dto/get-comment.dto';
 import { FindOneOptions } from 'typeorm';
+import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -48,6 +49,18 @@ export class CommentsService {
 
     async create(createCommentDto: CreateCommentDto): Promise<Comment>{
         const comment: Comment = this.commentRepository.create(createCommentDto);
+        try{
+            await this.commentRepository.save(comment);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+
+        return comment;
+    }
+
+    async update(id: string, updateCommentDto: UpdateCommentDto): Promise<Comment>{
+        let comment: Comment = await this.findById(id);
+        comment = this.commentRepository.create({...comment, ...updateCommentDto});
         try{
             await this.commentRepository.save(comment);
         }catch(error){
