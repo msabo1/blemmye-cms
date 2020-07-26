@@ -8,6 +8,7 @@ import { Post } from '../blog/posts/entities/post.entity';
 import { Tag } from '../blog/posts/entities/tag.entity';
 import { Category } from '../blog/categories/category.entity';
 import { Comment } from "../blog/comments/comment.entity";
+import { Page } from '../pages/page.entity';
 
 export const entities = [
     Role,
@@ -19,5 +20,6 @@ export const entities = [
     Post,
     Tag,
     Category,
-    Comment
+    Comment,
+    Page
 ];
