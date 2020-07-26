@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, Get, Query, UsePipes, ValidationPipe, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Query, UsePipes, ValidationPipe, Param, Patch, Delete } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { InjectMapper, AutoMapper } from 'nestjsx-automapper';
 import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
@@ -46,5 +46,11 @@ export class PagesController {
     async update(@Param() {id}: Id, @Body() updatePageDto: UpdatePageDto): Promise<PageVM>{
         const page: Page = await this.pagesService.update(id, updatePageDto);
         return await this.mapper.mapAsync(page, PageVM);
+    }
+
+    @PrivilegeAuth('delete', 'pages')
+    @Delete(':id')
+    async delete(@Param() {id}: Id){
+        await this.pagesService.delete(id);
     }
 }

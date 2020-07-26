@@ -66,4 +66,12 @@ export class PagesService {
         }
         return page;
     }
+
+    async delete(id: string){
+        try{
+            this.pageRepository.delete(id);
+        }catch(error){
+            throw new InternalServerErrorException;
+        }
+    }
 }
