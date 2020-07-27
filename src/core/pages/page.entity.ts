@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from "typeorm";
 import { User } from "../users/user.entity";
 import { PageStatus } from "./page-status.enum";
+import { PageExtension } from "../../plugins/entity-extensions/page-extension.entity";
 
 @Entity('pages')
 export class Page{
@@ -29,4 +30,6 @@ export class Page{
     @Column({nullable: true})
     authorId?: string;
 
+    @Column(type => PageExtension)
+    extension: PageExtension;
 }

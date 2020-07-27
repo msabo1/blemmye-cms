@@ -1,5 +1,6 @@
 import { Entity, OneToOne, RelationId, PrimaryGeneratedColumn, JoinColumn, Column } from "typeorm";
 import { Role } from "../roles/entities/role.entity";
+import { PreferencesExtension } from "../../plugins/entity-extensions/preferences-extension.entity";
 
 @Entity()
 export class Preferences{
@@ -20,4 +21,7 @@ export class Preferences{
 
     @Column()
     visitorRoleId: string;
+
+    @Column(type => PreferencesExtension)
+    extension: PreferencesExtension;
 }

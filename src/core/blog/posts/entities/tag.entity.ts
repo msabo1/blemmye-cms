@@ -1,5 +1,6 @@
-import { Entity, PrimaryColumn, ManyToMany } from "typeorm";
+import { Entity, PrimaryColumn, ManyToMany, Column } from "typeorm";
 import { Post } from "./post.entity";
+import { TagExtension } from "../../../../plugins/entity-extensions/tag-extension.entity";
 
 @Entity()
 export class Tag{
@@ -8,4 +9,7 @@ export class Tag{
 
     @ManyToMany(type => Post, post => post.tags)
     posts: Post[];
+
+    @Column(type => TagExtension)
+    extension: TagExtension;
 }

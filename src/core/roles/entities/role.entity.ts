@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, AfterLoad, ManyToOne } from "typeorm";
 import { RolePrivilege } from "./role-privilege.entity";
 import { User } from "../../users/user.entity";
+import { RoleExtension } from "../../../plugins/entity-extensions/role-extension.entity";
 
 @Entity('roles')
 export class Role{
@@ -21,6 +22,9 @@ export class Role{
 
     @OneToMany(type => User, user => user.role)
     users: User[];
+
+    @Column(type => RoleExtension)
+    extension: RoleExtension;
 
 
     /**

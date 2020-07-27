@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { CommentStatus } from "./comment-status.enum";
 import { User } from "../../users/user.entity";
 import { Post } from "../posts/entities/post.entity";
+import { CommentExtension } from "../../../plugins/entity-extensions/comment-extension.entity";
 
 @Entity('comments')
 export class Comment{
@@ -43,4 +44,7 @@ export class Comment{
 
     @OneToMany(type => Comment, comment => comment.parent)
     replies: Comment[]
+
+    @Column(type => CommentExtension)
+    extension: CommentExtension;
 }

@@ -3,6 +3,7 @@ import { Role } from "../roles/entities/role.entity";
 import { UserStatus } from "./user-status.enum";
 import { Post } from "../blog/posts/entities/post.entity";
 import { Comment } from "../blog/comments/comment.entity";
+import { UserExtension } from "../../plugins/entity-extensions/user-extension.entity";
 
 @Entity('users')
 @Unique(['username'])
@@ -38,4 +39,6 @@ export class User{
     @OneToMany(type => Comment, comment => comment.author)
     comments: Comment[]
 
+    @Column(type => UserExtension)
+    extension: UserExtension;
 }

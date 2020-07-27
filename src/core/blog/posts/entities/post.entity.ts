@@ -4,6 +4,7 @@ import { PostStatus } from "../post-status.enum";
 import { Tag } from "./tag.entity";
 import { Category } from "../../categories/category.entity";
 import { Comment } from "../../comments/comment.entity";
+import { PostExtension } from "../../../../plugins/entity-extensions/post-extension.entity";
 
 @Entity('posts')
 export class Post{
@@ -49,4 +50,6 @@ export class Post{
     @OneToMany(type => Comment, comment => comment.post)
     comments: Comment[];
 
+    @Column(type => PostExtension)
+    extension: PostExtension;
 }
