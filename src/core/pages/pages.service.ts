@@ -11,7 +11,7 @@ import { FindOneOptions } from 'typeorm';
 export class PagesService {
     constructor(private readonly pageRepository: PageRepository){}
 
-    async find(queryPagesDto: QueryPagesDto): Promise<Page[]>{
+    async find(queryPagesDto: QueryPagesDto): Promise<[Page[], number?]>{
         try{
             return await this.pageRepository.findWithQuery(queryPagesDto);
         }catch(error){

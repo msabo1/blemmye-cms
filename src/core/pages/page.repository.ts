@@ -4,7 +4,7 @@ import { QueryPagesDto } from "./dto/query-pages.dto";
 
 @EntityRepository(Page)
 export class PageRepository extends Repository<Page>{
-    async findWithQuery(querypagesDto: QueryPagesDto): Promise<Page[]>{
+    async findWithQuery(querypagesDto: QueryPagesDto): Promise<[Page[], number?]>{
         let {search, limit, offset, sortBy, order, title, status, authorId, loadAuthor, cascade}: QueryPagesDto = querypagesDto;
         const query: SelectQueryBuilder<Page> = this.createQueryBuilder('page');
 
@@ -55,7 +55,7 @@ export class PageRepository extends Repository<Page>{
             query.orderBy(sortBy, order);
         }
 
-        const pages: Page[] = await query.getMany();
-        return pages;
+        const [pages, count]: [Page[], number?] = await query.getManyAndCount();
+        return [pages, count];
     }
 }

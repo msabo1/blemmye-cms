@@ -4,7 +4,7 @@ import { QueryPostsDto } from "./dto/query-posts.dto";
 
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post>{
-    async findWithQuery(queryPostsDto: QueryPostsDto): Promise<Post[]>{
+    async findWithQuery(queryPostsDto: QueryPostsDto): Promise<[Post[], number]>{
         let {search, limit, offset, sortBy, order, title, status, authorId, tag, categoryId, loadAuthor, cascade}: QueryPostsDto = queryPostsDto;
         const query: SelectQueryBuilder<Post> = this.createQueryBuilder('post')
             .leftJoinAndMapMany('post.tags', 'post.tags', 'tag')
@@ -79,7 +79,7 @@ export class PostRepository extends Repository<Post>{
             query.orderBy(sortBy, order);
         }
 
-        const posts: Post[] = await query.getMany();
-        return posts;
+        const [posts, count]: [Post[], number] = await query.getManyAndCount();
+        return [posts, count];
     }
 }

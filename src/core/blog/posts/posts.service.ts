@@ -17,7 +17,7 @@ export class PostsService {
         private readonly schedulerRegistry: SchedulerRegistry
         ){}
 
-    async find(queryPostsDto: QueryPostsDto): Promise<Post[]>{
+    async find(queryPostsDto: QueryPostsDto): Promise<[Post[], number?]>{
         try{
             return await this.postRepository.findWithQuery(queryPostsDto);
         }catch(error){

@@ -11,7 +11,7 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesService {
     constructor(private readonly categoryRepository: CategoryRepository){}
 
-    async find(queryCategoriesDto: QueryCategoriesDto): Promise<Category[]>{
+    async find(queryCategoriesDto: QueryCategoriesDto): Promise<[Category[], number?]>{
         try{
             return await this.categoryRepository.findWithQuery(queryCategoriesDto);
         }catch(error){

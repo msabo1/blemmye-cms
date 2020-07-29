@@ -11,7 +11,7 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 export class CommentsService {
     constructor(private readonly commentRepository: CommentRepository){}
 
-    async find(queryCommentsDto: QueryCommentsDto): Promise<Comment[]>{
+    async find(queryCommentsDto: QueryCommentsDto): Promise<[Comment[], number?]>{
         try{
             return await this.commentRepository.findWithQuery(queryCommentsDto);
         }catch(error){

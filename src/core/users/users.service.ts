@@ -23,7 +23,7 @@ export class UsersService {
         private readonly jwtService: JwtService
         ){}
 
-    async find(queryUserDto: QueryUserDto): Promise<User[]>{
+    async find(queryUserDto: QueryUserDto): Promise<[User[], number?]>{
         try{
             return await this.userRepository.findWithQuery(queryUserDto);
         }catch(error){

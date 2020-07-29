@@ -10,7 +10,7 @@ export class RoleRepository extends Repository<Role>{
      * Loads roles privileges.
      * Returns fetched roles.
     */
-    async findWithQuery(queryRoleDto: QueryRoleDto): Promise<Role[]>{
+    async findWithQuery(queryRoleDto: QueryRoleDto): Promise<[Role[], number?]>{
         let {search, limit, offset, sortBy, order} = queryRoleDto;
         const query: SelectQueryBuilder<Role> = this.createQueryBuilder('role')
             .leftJoinAndSelect('role.privileges', 'privilege')
@@ -32,8 +32,8 @@ export class RoleRepository extends Repository<Role>{
             query.orderBy(sortBy, order)
         }
 
-        const roles: Role[] = await query.getMany();
+        const [roles, count]: [Role[], number?] = await query.getManyAndCount();
 
-        return roles;
+        return [roles, count];
     }
 }

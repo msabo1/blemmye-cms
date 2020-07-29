@@ -5,7 +5,7 @@ import { name } from "../../database/typeorm.config";
 
 @EntityRepository(Category)
 export class CategoryRepository extends Repository<Category>{
-    async findWithQuery(queryCategoriesDto: QueryCategoriesDto): Promise<Category[]>{
+    async findWithQuery(queryCategoriesDto: QueryCategoriesDto): Promise<[Category[], number?]>{
         let {search, limit, offset, sortBy, order, name, parentId, loadParent, loadChildren}: QueryCategoriesDto = queryCategoriesDto;
 
         const query: SelectQueryBuilder<Category> = this.createQueryBuilder('category');
@@ -40,8 +40,8 @@ export class CategoryRepository extends Repository<Category>{
             query.orderBy(sortBy, order)
         }
 
-        const categories: Category[] = await query.getMany();
+        const [categories, count]: [Category[], number?] = await query.getManyAndCount();
 
-        return categories;
+        return [categories, count];
     }
 }

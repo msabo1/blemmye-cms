@@ -4,7 +4,7 @@ import { QueryCommentsDto } from "./dto/query-comments.dto";
 
 @EntityRepository(Comment)
 export class CommentRepository extends Repository<Comment>{
-    async findWithQuery(queryCommentsDto: QueryCommentsDto): Promise<Comment[]>{
+    async findWithQuery(queryCommentsDto: QueryCommentsDto): Promise<[Comment[], number?]>{
         let {search, limit, offset, sortBy, order, status, authorId, postId, parentId, loadAuthor, loadReplies, loadParent, onlyRoots}: QueryCommentsDto = queryCommentsDto;
         const query: SelectQueryBuilder<Comment> = this.createQueryBuilder('comment');
 
@@ -61,7 +61,7 @@ export class CommentRepository extends Repository<Comment>{
             query.orderBy(sortBy, order)
         }
 
-        const comments: Comment[] = await query.getMany();
-        return comments;
+        const [comments, count]: [Comment[], number?] = await query.getManyAndCount();
+        return [comments, count];
     }
 }

@@ -4,7 +4,7 @@ import { QueryUserDto } from "./dto/query-user.dto";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
-    async findWithQuery(queryUserDto: QueryUserDto): Promise<User[]>{
+    async findWithQuery(queryUserDto: QueryUserDto): Promise<[User[], number?]>{
         let {search, limit, offset, sortBy, order, status, roleId, cascade}: QueryUserDto = queryUserDto;
         const query: SelectQueryBuilder<User> = this.createQueryBuilder('user');
 
@@ -45,7 +45,7 @@ export class UserRepository extends Repository<User>{
             query.orderBy(sortBy, order)
         }
 
-        const users: User[] = await query.getMany();
-        return users;
+        const [users, count]: [User[], number?] = await query.getManyAndCount();
+        return [users, count];
     }
 }

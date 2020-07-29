@@ -29,11 +29,9 @@ export class RolesService {
      * If query is empty, returns all roles.
      * If there is no roles stored, returns empty array.
      */
-    async find(queryRoleDto: QueryRoleDto): Promise<Role[]>{
+    async find(queryRoleDto: QueryRoleDto): Promise<[Role[], number?]>{
         try{
-            let roles: Role[];
-            roles = await this.roleRepository.findWithQuery(queryRoleDto);
-            return roles;
+            return await this.roleRepository.findWithQuery(queryRoleDto);
         }catch(error){
             throw new InternalServerErrorException;
         }
