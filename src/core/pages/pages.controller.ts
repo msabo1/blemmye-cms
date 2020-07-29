@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseInterceptors, Get, Query, UsePipes, ValidationPipe, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, UseInterceptors, Get, Query, UsePipes, ValidationPipe, Param, Patch, Delete, Req } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { InjectMapper, AutoMapper } from 'nestjsx-automapper';
 import { PrivilegeAuth } from '../auth/decorators/privilege-auth.decorator';
@@ -21,8 +21,9 @@ export class PagesController {
 
     @PrivilegeAuth('read', 'pages')
     @Get()
-    async get(@Query() queryPagesDto: QueryPagesDto): Promise<PageVM[]>{
-        const pages: Page[] = await this.pagesService.find(queryPagesDto);
+    async get(@Query() queryPagesDto: QueryPagesDto, @Req() req): Promise<PageVM[]>{
+        const [pages, count]: [Page[], number?] = await this.pagesService.find(queryPagesDto);
+        req.res.set('Pagination-Count', count.toString());
         return await this.mapper.mapArrayAsync(pages, PageVM);
     }
 

@@ -1,4 +1,4 @@
-import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, UseInterceptors, Body, ValidationPipe, UsePipes, Get, Query, Param, Patch, Delete, Req } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { PrivilegeAuth } from '../../auth/decorators/privilege-auth.decorator';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -21,8 +21,9 @@ export class CommentsController {
 
     @PrivilegeAuth('read', 'comments')
     @Get()
-    async get(@Query() queryCommentsDto: QueryCommentsDto): Promise<CommentVM[]>{
-        const comments: Comment[] = await this.commentsService.find(queryCommentsDto);
+    async get(@Query() queryCommentsDto: QueryCommentsDto, @Req() req): Promise<CommentVM[]>{
+        const [comments, count]: [Comment[], number?] = await this.commentsService.find(queryCommentsDto);
+        req.res.set('Pagination-Count', count.toString());
         return await this.mapper.mapArrayAsync(comments, CommentVM);
     }
 

@@ -1,4 +1,4 @@
-import { Controller, Body, Post, UsePipes, ValidationPipe, UseInterceptors, Patch, Param, Get, Query, Delete } from '@nestjs/common';
+import { Controller, Body, Post, UsePipes, ValidationPipe, UseInterceptors, Patch, Param, Get, Query, Delete, Req, Res } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as  PostEntity} from './entities/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -21,8 +21,9 @@ export class PostsController {
 
     @PrivilegeAuth('read', 'posts')
     @Get()
-    async get(@Query() queryPostsDto: QueryPostsDto): Promise<PostVM[]>{
-        const posts: PostEntity[] = await this.postsService.find(queryPostsDto);
+    async get(@Query() queryPostsDto: QueryPostsDto, @Req() req): Promise<PostVM[]>{
+        const [posts, count]: [PostEntity[], number?] = await this.postsService.find(queryPostsDto);
+        req.res.set('Pagination-Count', count.toString());
         return await this.mapper.mapArrayAsync(posts, PostVM);
     }
 

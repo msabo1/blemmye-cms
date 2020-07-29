@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Query, UsePipes, ValidationPipe, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, UsePipes, ValidationPipe, Param, Patch, Delete, Req } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { PrivilegeAuth } from '../../auth/decorators/privilege-auth.decorator';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -15,8 +15,10 @@ export class CategoriesController {
 
     @PrivilegeAuth('read', 'categories')
     @Get()
-    async get(@Query() queryCategoriesDto: QueryCategoriesDto): Promise<Category[]>{
-        return await this.categoriesService.find(queryCategoriesDto);
+    async get(@Query() queryCategoriesDto: QueryCategoriesDto, @Req() req): Promise<Category[]>{
+        const [categories, count]: [Category[], number?] = await this.categoriesService.find(queryCategoriesDto);
+        req.res.set('Pagination-Count', count.toString());
+        return categories;
     }
 
     @PrivilegeAuth('read', 'categories')

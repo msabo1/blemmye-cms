@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe, HttpCode, Param, Query, Patch, Delete} from '@nestjs/common';
+import { Controller, Get, Post, Body, UsePipes, ValidationPipe, HttpCode, Param, Query, Patch, Delete, Req} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import { UserVM } from './models/user.model';
@@ -22,8 +22,9 @@ export class UsersController {
 
     @PrivilegeAuth('read', 'users')
     @Get()
-    async get(@Query() queryUserDto: QueryUserDto): Promise<UserVM[]>{
-        const users: User[] = await this.usersServive.find(queryUserDto);
+    async get(@Query() queryUserDto: QueryUserDto, @Req() req): Promise<UserVM[]>{
+        const [users, count]: [User[], number?] = await this.usersServive.find(queryUserDto);
+        req.res.set('Pagination-Count', count.toString());
         return await this.mapper.mapArrayAsync(users, UserVM);
     }
 

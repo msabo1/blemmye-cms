@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Query, UsePipes, ValidationPipe, Patch, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, UsePipes, ValidationPipe, Patch, Delete, UseGuards, Req } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { Role } from './entities/role.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
@@ -19,8 +19,10 @@ export class RolesController {
      */
     @PrivilegeAuth('read', 'roles')
     @Get()
-    async get(@Query() queryRoleDto: QueryRoleDto): Promise<Role[]>{
-        return await this.rolesService.find(queryRoleDto);
+    async get(@Query() queryRoleDto: QueryRoleDto, @Req() req): Promise<Role[]>{
+        const [roles, count]: [Role[], number?] = await this.rolesService.find(queryRoleDto);
+        req.res.set('Pagination-Count', count.toString());
+        return roles;
     }
 
     /** 
