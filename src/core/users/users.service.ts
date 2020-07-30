@@ -12,6 +12,8 @@ import { QueryUserDto } from './dto/query-user.dto';
 import { FindOneOptions } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
+import { PreferencesService } from '../preferences/preferences.service';
+import { Preferences } from '../preferences/preferences.entity';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +22,8 @@ export class UsersService {
 
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly jwtService: JwtService
+        private readonly jwtService: JwtService,
+        private readonly preferencesService: PreferencesService
         ){}
 
     async find(queryUserDto: QueryUserDto): Promise<[User[], number?]>{
@@ -76,6 +79,10 @@ export class UsersService {
         createUserDto.password = await bcrypt.hash(createUserDto.password, this.hashRounds);
         if(!createUserDto.status){
             createUserDto.status = UserStatus.active;
+        }
+        if(!createUserDto.roleId){
+            const preferences: Preferences = await this.preferencesService.find();
+            createUserDto.roleId = preferences.defaultRoleId;
         }
         
         const user: User = this.userRepository.create(createUserDto);
