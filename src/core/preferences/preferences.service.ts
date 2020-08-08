@@ -10,7 +10,7 @@ export class PreferencesService {
 
     async find(): Promise<Preferences>{
         try{
-            return await this.preferencesRepository.findOne();
+            return await this.preferencesRepository.findOne(null, {relations: ['defaultRole', 'visitorRole']});
         }catch(error){
             throw new InternalServerErrorException;
         }

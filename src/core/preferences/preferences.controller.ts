@@ -9,7 +9,6 @@ import { UpdatePreferencesDto } from './dto/update-preferences.dto';
 export class PreferencesController {
     constructor(private readonly preferencesService: PreferencesService){}
 
-    @PrivilegeAuth('read', 'preferences')
     @Get()
     async get(): Promise<Preferences>{
         return await this.preferencesService.find();
