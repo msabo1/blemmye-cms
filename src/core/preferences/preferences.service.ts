@@ -18,7 +18,7 @@ export class PreferencesService {
     }
 
     async update(updatePreferencesDto: UpdatePreferencesDto): Promise<Preferences>{
-        let preferences: Preferences = await this.find();
+        let preferences: Preferences = await this.preferencesRepository.findOne();
         preferences = this.preferencesRepository.create({...preferences, ...updatePreferencesDto});
         try{
             await this.preferencesRepository.save(preferences);
