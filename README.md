@@ -2,7 +2,7 @@
 ### The headless CMS
 
 ## Status
-** Project is in late stage of development and it is functional. Currently it is poorly documented and that makes it hardly usable. **
+**Project is in late stage of development and it is functional. Currently it is poorly documented and that makes it hardly usable.**
 
 ## Description
 Blemmye is headless content managment system I am developing as university project. It is actually extensible minimal core which provides only REST API endpoints for core features. It is developed using NestJS framework.
