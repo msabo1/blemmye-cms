@@ -32,7 +32,7 @@ export class PostRepository extends Repository<Post>{
                 .leftJoin('post.categories', 'category')
                 .where('LOWER(tag.name) LIKE :search OR LOWER(category.name) LIKE :search', {search: `%${search}%`});
 
-            query.where('LOWER(post.title) LIKE :search OR LOWER(post.content) LIKE :search OR LOWER(post.image_path) LIKE :search OR post.id IN' + subQuery.getQuery(), {search: `%${search}%`});
+            query.where('LOWER(post.title) LIKE :search OR LOWER(post.content) LIKE :search OR LOWER(post.imagePath) LIKE :search OR post.id IN' + subQuery.getQuery(), {search: `%${search}%`});
             if(loadAuthor){
                 query.orWhere('LOWER(author.username) LIKE :search', {search: `%${search}%`});
             }
