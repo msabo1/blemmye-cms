@@ -14,7 +14,7 @@ export class PostProfile extends ProfileBase{
             .forMember((dest: PostVM) => dest.status, mapFrom((src: Post) => src.status))
             .forMember((dest: PostVM) => dest.createdAt, mapFrom((src: Post) => src.createdAt))
             .forMember((dest: PostVM) => dest.updatedAt, mapFrom((src: Post) => src.updatedAt))
-            .forMember((dest: PostVM) => dest.image_path, mapFrom((src: Post) => src.image_path))
+            .forMember((dest: PostVM) => dest.imagePath, mapFrom((src: Post) => src.imagePath))
             .forMember((dest: PostVM) => dest.publishOn, mapFrom((src: Post) => src.publishOn))
             .forMember((dest: PostVM) => dest.authorId, mapFrom((src: Post) => src.authorId))
             .forMember((dest: PostVM) => dest.tags, mapFrom((src: Post) => src.tags))

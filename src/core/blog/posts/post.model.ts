@@ -10,7 +10,7 @@ export class PostVM{
 
     content: string;
 
-    image_path?: string;
+    imagePath?: string;
 
     status: PostStatus;
 

@@ -18,7 +18,7 @@ export class Post{
     content: string;
 
     @Column({nullable: true})
-    image_path?: string;
+    imagePath?: string;
 
     @Column()
     status: PostStatus;

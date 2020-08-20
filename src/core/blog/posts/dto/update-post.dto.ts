@@ -18,7 +18,7 @@ export class UpdatePostDto{
     @IsOptional()
     @IsNotEmpty()
     @IsString()
-    image_path?: string;
+    imagePath?: string;
 
     @IsOptional()
     @IsNotEmpty()
