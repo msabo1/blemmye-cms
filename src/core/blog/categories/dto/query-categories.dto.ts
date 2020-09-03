@@ -27,4 +27,10 @@ export class QueryCategoriesDto extends QueryDto{
     @IsBoolean()
     @Transform(loadChildren => loadChildren == 'true')
     loadChildren?: boolean;
+    
+    @IsOptional()
+    @IsNotEmpty()
+    @IsBoolean()
+    @Transform(onlyRoots => onlyRoots == 'true')
+    onlyRoots?: boolean;
 }
