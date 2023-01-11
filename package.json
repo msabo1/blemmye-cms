@@ -32,7 +32,7 @@
     "@types/cron": "^1.7.2",
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.11.1",
+    "class-validator": "^0.14.0",
     "cron": "^1.8.2",
     "nestjsx-automapper": "^3.0.17",
     "node-config-ts": "^3.0.4",
